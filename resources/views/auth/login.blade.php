@@ -3,7 +3,7 @@
 @section('content')
 <div class="login-box">
     <div class="login-logo">
-        <a href="#">E - ARSIP</a> <br>
+        <a href="#">E - ARSIP</a>  <br>
         <h6>Laravel 7</h6>
     </div>
     <!-- /.login-logo -->

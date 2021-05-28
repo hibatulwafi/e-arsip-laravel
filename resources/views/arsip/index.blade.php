@@ -135,7 +135,7 @@
                                                         <p class="mt-3">
                                                         <center>
                                                             <?php 
-                                                                $QRCODE=$setting->address.'DetailBarcode/'.$row->id_arsip;
+                                                                $QRCODE=url('/').'/DetailBarcode/'.$row->id_arsip;
                                                                 echo DNS2D::getBarcodeHTML($QRCODE, 'QRCODE');
                                                             ?>
                                                         </center>

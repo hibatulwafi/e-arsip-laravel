@@ -67,7 +67,6 @@ class SettingController extends Controller
             'favicon' => $favicon,
             'footer_right' => $request->footer_right,
             'footer_left' => $request->footer_left,
-            'address' => $request->address,
         ]);
 
         return view('setting.index') ;
@@ -110,10 +109,9 @@ class SettingController extends Controller
             'footer_right' => 'required|string|max:50',
             'logo' => 'nullable|image|mimes:jpg,png,jpeg|max:2000',
             'favicon' => 'nullable|mimes:ico|max:1000',   
-            'address' => 'required|string|max:100',         
         ]);
 
-        $data = $request->only(['app_name', 'footer_left', 'footer_right','address']);
+        $data = $request->only(['app_name', 'footer_left', 'footer_right']);
 
         if($request->hasFile('logo')){
             // $logo = $request->logo->store('logo');
