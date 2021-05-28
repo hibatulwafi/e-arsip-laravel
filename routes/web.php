@@ -2,16 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function() {
     return redirect(route('login'));
@@ -20,7 +10,6 @@ Route::get('/', function() {
 Auth::routes(['register' => false]);
 
 Route::group(['middleware' => 'auth'], function(){
-    
     //Manajemen Rak
     Route::group(['middleware' => ['permission:manajemen rak']], function() {
         Route::get('/rak','RakController@index')->name('rak.index');
@@ -74,12 +63,17 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/roles/search','RoleController@search')->name('roles.search');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
-        // Route::resource('setting', 'SettingController');        
     });
 
     //profile
     Route::resource('/profile', 'ProfileController');
 
     Route::get('/home', 'HomeController@index')->name('home');
+
 });
 
+    //ujicoba
+    Route::get('/generateBarcode','ArsipController@generateBarcode')->name('arsip.generateBarcode');
+    Route::get('/DetailBarcode/{id}','ArsipController@DetailBarcode')->name('arsip.DetailBarcode');
+    Route::post('/pinjamBarcode','PeminjamanController@pinjamBarcode')->name('peminjaman.pinjamBarcode');
+    Route::get('/kembaliBarcode/{id}','PeminjamanController@kembaliBarcode')->name('peminjaman.kembaliBarcode');

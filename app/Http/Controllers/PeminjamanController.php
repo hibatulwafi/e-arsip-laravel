@@ -230,4 +230,71 @@ class PeminjamanController extends Controller
         return view('history.index',$data);
     }
 
+
+    function pinjamBarcode(Request $request){
+
+          $cek = DB::table('users')->where('id',$request->id_peminjam)->first();
+          $qry = DB::table('tb_peminjaman')->insert([
+            'tanggal_peminjaman' => now(),
+            'id_arsip' => $request->id_arsip,
+            'nama_peminjam' => $cek->name,
+            'id_peminjam'=> $request->id_peminjam,
+            'id_petugas' => 1,
+            'status_peminjaman' => 2,
+            'created_at' => now()
+            ]);
+
+            if ($qry) {
+              $editarsip = DB::table('tb_arsip')
+              ->where('id_arsip',$request->id_arsip)
+              ->update([
+                'status_arsip' => 2
+            ]);
+
+              session()->flash('success', 'Peminjaman Berhasil');
+              return redirect()->back();
+
+            }else{
+              session()->flash('error', 'Gagal Meminta Request');
+              return redirect()->back();
+            }
+
+    }
+
+
+    function kembaliBarcode($id){
+
+        $cek = DB::table('tb_peminjaman')->where('id_peminjaman',$id)->first();
+
+        if ($cek) {
+
+          $add = DB::table('tb_pengembalian')->insert([
+            'id_peminjaman' => $id,
+            'tanggal_pengembalian' => now(),
+            'id_arsip' => $cek->id_arsip,
+            'created_at' => now()
+            ]);
+
+          $qry = DB::table('tb_peminjaman')->where('id_peminjaman',$id)->update([
+              'status_peminjaman' => 3,
+              'id_petugas' => 1,
+              'updated_at' => now(),
+              'tanggal_kembali' => now()
+            ]);
+
+          $editarsip = DB::table('tb_arsip')
+            ->where('id_arsip',$cek->id_arsip)
+            ->update([
+              'status_arsip' => 1
+            ]);
+
+            session()->flash('success', 'Arsip Dikembalikan');
+              return redirect()->back();
+        }else{
+            session()->flash('error', 'Gagal Meminta Request');
+              return redirect()->back();
+        }
+
+    }
+
 }

@@ -109,10 +109,46 @@
                                                                 Delete
                                                             </a>
                                                         </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#barcodeModal{{ $row->id_arsip }}">
+                                                                <i class="fas fa-eye    "></i>
+                                                                Show Barcode
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </td>
                                         </tr>
+
+                                        <!-- Modal Barcode-->
+                                        <div class="modal fade" id="barcodeModal{{ $row->id_arsip }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel">Barcode - {{ $row->nama_arsip }}</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="mt-3">
+                                                        <center>
+                                                            <?php 
+                                                                $QRCODE=$setting->address.'DetailBarcode/'.$row->id_arsip;
+                                                                echo DNS2D::getBarcodeHTML($QRCODE, 'QRCODE');
+                                                            ?>
+                                                        </center>
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     @empty
                                         <tr>
                                             <td colspan="5" class="text-center">Data Tidak Ada</td>
@@ -161,6 +197,7 @@
     </div>
 </div>
 
+
 <!-- Modal Import File-->
 <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -206,6 +243,9 @@
         $('#deleteModal').modal('show')
     }
 
+    function handleBarcode(id) {
+        $('#barcodeModal').modal('show');
+    }
 </script>
 
 @error('import_arsip')

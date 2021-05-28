@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
+    @yield('css')
+
 </head>
 
 <body class="hold-transition login-page">
@@ -19,6 +21,7 @@
 
     <!-- js -->
     <script src="{{ asset('/js/app.js') }}"></script>
+    @yield('scripts')
 
 </body>
 

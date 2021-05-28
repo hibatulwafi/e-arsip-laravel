@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Setting;
+use App\User;
 
 class ArsipController extends Controller
 {
@@ -11,7 +13,8 @@ class ArsipController extends Controller
 
         $data=array(
             'table' =>DB::table('tb_arsip')
-            ->join('tb_rak','tb_arsip.id_rak','tb_rak.id_rak')->get()
+            ->join('tb_rak','tb_arsip.id_rak','tb_rak.id_rak')->get(),
+            'setting'=> $setting = Setting::get()->first()
         );
         return view('arsip.index',$data);
     }
@@ -100,6 +103,41 @@ class ArsipController extends Controller
        		session()->flash('error', 'Gagal Hapus Data');
        	}
         return redirect()->back();
+    }
+
+    public function generateBarcode(Request $request){
+     /* $id = $request->get('id');
+      $product = Product::find($id);*/
+      return view('arsip.barcode')/*->with('product',$product)*/;
+    }
+
+    public function DetailBarcode($id){
+
+      $cek = DB::table('tb_arsip')->where('id_arsip','like', '%'.$id.'%')->get();
+
+      if ( count($cek) > 0) {
+            $qry = DB::table ('tb_arsip')
+          ->join('tb_rak','tb_arsip.id_rak','tb_rak.id_rak')
+          ->where('tb_arsip.id_arsip',$id)
+          ->first();
+
+          $peminjaman = DB::table ('tb_arsip')
+          ->join('tb_peminjaman','tb_peminjaman.id_arsip','tb_arsip.id_arsip')
+          ->where('tb_arsip.id_arsip',$id)
+          ->where('tb_peminjaman.status_peminjaman',2)
+          ->get();
+
+          $data=array(
+              'qry' => $qry,
+              'user' => User::all(),
+              'peminjaman' => $peminjaman
+          );
+
+          return view('arsip.detail',$data);
+      } else {
+        echo "Tidak Bisa Akses ! ";
+      }
+
     }
 
 }

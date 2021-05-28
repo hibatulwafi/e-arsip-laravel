@@ -69,6 +69,14 @@
                                                     <div class="text-danger small mt-1">{{ $message }}</div>
                                                 @enderror
                                             </div>
+        
+                                            <div class="form-group">
+                                                <label for="address">Address</label> 
+                                                <input type="text" class="form-control @error('address') is-invalid @enderror" name="address" id="address" value="{{ $setting->address }}"  placeholder="Alamat aplikasi" autofocus>
+                                                @error('address')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                         <!-- /.col-md -->
                                         <div class="col-md-6">
